@@ -1,0 +1,12 @@
+# Claude Code のローカル設定
+.claude/
+
+# ローカル確認用サーバー（公開サイトには不要）
+serve.js
+
+# OS / エディタ
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+*.log

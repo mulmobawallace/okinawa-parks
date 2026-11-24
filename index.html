@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>沖縄こうえんナビ</title>
+  <meta name="description" content="沖縄県内の公園を、広さ（大・中・小）と地域でさがせるガイドです。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="site-name">沖縄こうえんナビ</p>
+      <h1 class="question">どのくらいの公園を<br class="sp">さがしますか？</h1>
+
+      <nav class="sizes" aria-label="広さで絞り込み">
+        <button class="size size-L" data-size="L" aria-pressed="false">
+          <span class="kanji" aria-hidden="true">大</span>
+          <span class="size-name">広域・総合公園</span>
+          <span class="size-meta">10ha以上　<b data-count="L"></b>か所</span>
+        </button>
+        <button class="size size-M" data-size="M" aria-pressed="false">
+          <span class="kanji" aria-hidden="true">中</span>
+          <span class="size-name">地区・近隣公園</span>
+          <span class="size-meta">2〜10ha　<b data-count="M"></b>か所</span>
+        </button>
+        <button class="size size-S" data-size="S" aria-pressed="false">
+          <span class="kanji" aria-hidden="true">小</span>
+          <span class="size-name">街区・ポケット</span>
+          <span class="size-meta">2ha未満　<b data-count="S"></b>か所</span>
+        </button>
+      </nav>
+
+      <button class="show-all" id="show-all" hidden>すべての広さを表示</button>
+    </div>
+  </header>
+
+  <section class="filters" aria-label="地域とキーワードで絞り込み">
+    <div class="wrap filters-inner">
+      <div class="areas" id="areas" role="group" aria-label="地域"></div>
+      <label class="search">
+        <span class="visually-hidden">キーワードで検索</span>
+        <input id="q" type="search" placeholder="公園名・地名・特徴（桜、ビーチ…）">
+      </label>
+      <p class="result-count" id="result-count" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <main class="wrap" id="list"></main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p class="footer-name">沖縄こうえんナビ</p>
+      <p>広さの区分と掲載内容は目安です。開園時間や料金は、各公園の公式情報で確認してください。</p>
+    </div>
+  </footer>
+
+  <script src="data/parks.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+/*
+ * 沖縄こうえんナビ
+ * 色は紅型（びんがた）と沖縄の素材から。
+ *   紅型の黄 … ヒーローの地色（このページで唯一の大胆な要素）
+ *   藍       … 文字色・「大」
+ *   琉球松   … 「中」
+ *   赤瓦     … 「小」
+ *   珊瑚白・石灰岩 … 地と罫線
+ */
+:root {
+  --bingata: #f3c318;
+  --ai: #1f2f5c;
+  --pine: #2e7d4f;
+  --kawara: #c8462f;
+  --coral: #fbfaf5;
+  --limestone: #dcd8ca;
+  --ai-soft: #4b5878;
+
+  --display: "Dela Gothic One", "Hiragino Kaku Gothic StdN", "Yu Gothic", sans-serif;
+  --body: "BIZ UDPGothic", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--coral);
+  color: var(--ai);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 720px) { .wrap { padding: 0 40px; } }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.sp { display: inline; }
+@media (min-width: 720px) { .sp { display: none; } }
+
+:focus-visible { outline: 3px solid var(--ai); outline-offset: 3px; }
+
+button { font: inherit; color: inherit; cursor: pointer; }
+
+/* ───────── ヒーロー：大・中・小がそのまま選択ボタン ───────── */
+.hero {
+  background: var(--bingata);
+  padding: 28px 0 40px;
+}
+.site-name {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 18px;
+  letter-spacing: .04em;
+}
+.question {
+  margin: 40px 0 8px;
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 1.5;
+}
+
+.sizes {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(12px, 4vw, 56px);
+}
+.size {
+  --c: var(--ai);
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: 0; border: 0; background: none; text-align: left;
+}
+.kanji {
+  display: block;
+  font-family: var(--display);
+  line-height: .9;
+  color: var(--c);
+  -webkit-text-stroke: max(2px, .014em) var(--c);
+  transition: color .25s ease;
+}
+.size-M { --c: var(--pine); }
+.size-S { --c: var(--kawara); }
+
+/* 字の大きさそのものが公園の広さを表す */
+.size-L .kanji { font-size: clamp(116px, 26vw, 300px); }
+.size-M .kanji { font-size: clamp(76px, 16vw, 184px); }
+.size-S .kanji { font-size: clamp(46px, 9.5vw, 110px); }
+
+.size-name {
+  margin-top: 14px;
+  font-weight: 700;
+  font-size: clamp(12px, 1.6vw, 16px);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.size-meta {
+  font-size: clamp(11px, 1.3vw, 14px);
+  color: var(--ai-soft);
+  white-space: nowrap;
+}
+.size-meta b { color: var(--ai); font-size: 1.15em; }
+
+/* 選んだ字は塗り、ほかは輪郭だけになる */
+.sizes.has-selection .size .kanji { color: transparent; }
+.sizes.has-selection .size[aria-pressed="true"] .kanji { color: var(--c); }
+.size:hover .kanji { color: var(--c); }
+
+.show-all {
+  margin-top: 24px;
+  padding: 8px 18px;
+  border: 2px solid var(--ai);
+  border-radius: 999px;
+  background: var(--coral);
+  font-weight: 700;
+  font-size: 14px;
+}
+.show-all:hover { background: var(--ai); color: var(--coral); }
+
+/* 読み込み時の一度だけの動き：字が小さい順にせり上がる */
+@media (prefers-reduced-motion: no-preference) {
+  .kanji { animation: rise .7s cubic-bezier(.2, .9, .25, 1.15) backwards; }
+  .size-S .kanji { animation-delay: .05s; }
+  .size-M .kanji { animation-delay: .17s; }
+  .size-L .kanji { animation-delay: .29s; }
+}
+@keyframes rise {
+  from { transform: translateY(40%); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* ───────── 地域・検索 ───────── */
+.filters {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--coral);
+  border-bottom: 2px solid var(--ai);
+}
+.filters-inner {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 12px 20px;
+  padding-top: 14px; padding-bottom: 14px;
+}
+.areas {
+  display: flex;
+  border: 2px solid var(--ai);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.area {
+  padding: 6px 16px;
+  border: 0;
+  border-left: 2px solid var(--ai);
+  background: none;
+  font-size: 14px; font-weight: 700;
+  white-space: nowrap;
+}
+.area:first-child { border-left: 0; }
+.area:hover { background: color-mix(in srgb, var(--ai) 8%, transparent); }
+.area[aria-pressed="true"] { background: var(--ai); color: var(--coral); }
+
+.search { flex: 1 1 260px; }
+.search input {
+  width: 100%;
+  padding: 9px 14px;
+  border: 2px solid var(--limestone);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ai);
+  font: inherit; font-size: 15px;
+}
+.search input:focus { outline: none; border-color: var(--ai); }
+.search input::placeholder { color: #8c93a6; }
+
+.result-count { margin: 0; font-size: 14px; color: var(--ai-soft); white-space: nowrap; }
+.result-count b { color: var(--ai); font-size: 18px; }
+
+/* ───────── 一覧：レイアウトの密度も広さに合わせる ───────── */
+.group { padding: 56px 0 8px; }
+.group-head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin: 0 0 24px;
+}
+.group-title { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(24px, 3.4vw, 34px); color: var(--c); }
+.group-count { font-size: 14px; color: var(--ai-soft); }
+
+.group-L { --c: var(--ai); }
+.group-M { --c: var(--pine); }
+.group-S { --c: var(--kawara); }
+
+.park { --c: inherit; }
+.park h3 { margin: 0; line-height: 1.45; }
+.park p { margin: 0; }
+.where { font-size: 13px; color: var(--ai-soft); }
+.where b { color: var(--c); }
+.tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tags li {
+  padding: 1px 10px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--c) 10%, transparent);
+  font-size: 12px;
+}
+.map {
+  color: var(--ai);
+  font-size: 14px; font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--c);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.map:hover { text-decoration-thickness: 4px; }
+
+/* 大：2列・ゆったり */
+.list-L {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr));
+  gap: 20px;
+}
+.list-L .park {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 28px;
+  background: #fff;
+  border: 2px solid var(--ai);
+  border-radius: 6px;
+}
+.list-L h3 { font-family: var(--display); font-weight: 400; font-size: clamp(20px, 2.4vw, 25px); }
+.list-L .map { margin-top: auto; padding-top: 4px; }
+
+/* 中：3列・標準 */
+.list-M {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+}
+.list-M .park {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--limestone);
+  border-left: 6px solid var(--pine);
+  border-radius: 6px;
+}
+.list-M h3 { font-size: 18px; }
+.list-M p { font-size: 14px; }
+.list-M .map { margin-top: auto; }
+
+/* 小：コンパクトな一覧 */
+.list-S {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr));
+  column-gap: 40px;
+  border-top: 2px solid var(--kawara);
+}
+.list-S .park {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--limestone);
+}
+.list-S h3 { font-size: 16px; }
+.list-S .where { grid-column: 1; }
+.list-S p { grid-column: 1; font-size: 13px; color: var(--ai-soft); }
+.list-S .map { grid-column: 2; grid-row: 1 / span 3; align-self: center; font-size: 13px; }
+.list-S .tags { display: none; }
+
+.empty {
+  margin: 56px 0;
+  padding: 40px 24px;
+  border: 2px dashed var(--limestone);
+  border-radius: 6px;
+  text-align: center;
+}
+.empty p { margin: 0 0 16px; }
+.empty button {
+  padding: 8px 18px;
+  border: 2px solid var(--ai); border-radius: 999px;
+  background: var(--ai); color: var(--coral);
+  font-weight: 700; font-size: 14px;
+}
+
+/* ───────── フッター ───────── */
+.footer {
+  margin-top: 72px;
+  padding: 36px 0 48px;
+  background: var(--ai);
+  color: color-mix(in srgb, var(--coral) 80%, transparent);
+  font-size: 13px;
+}
+.footer p { margin: 0; max-width: 40em; }
+.footer-name {
+  margin-bottom: 8px !important;
+  font-family: var(--display);
+  font-size: 18px;
+  color: var(--bingata);
+}
+
+/* ───────── スマホ ───────── */
+@media (max-width: 560px) {
+  .hero { padding-bottom: 32px; }
+  .question { margin-top: 28px; }
+  .areas {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .areas::-webkit-scrollbar { display: none; }
+  .area { flex: 1 0 auto; padding: 6px 12px; }
+  .list-L .park { padding: 20px; }
+  .group { padding-top: 44px; }
+}
