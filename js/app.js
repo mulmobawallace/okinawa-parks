@@ -49,13 +49,20 @@
     const mapUrl = "https://www.google.com/maps/search/?api=1&query=" +
       encodeURIComponent(p.name.replace(/（.*?）/g, "") + " " + p.city);
     const tags = (p.tags || []).map((t) => `<li>${escapeHtml(t)}</li>`).join("");
+    const notice = p.notice ? `<p class="notice"><b>お知らせ</b>${escapeHtml(p.notice)}</p>` : "";
+    const official = /^https:\/\//.test(p.officialUrl || "")
+      ? `<a class="map" href="${escapeHtml(p.officialUrl)}" target="_blank" rel="noopener">公式ページ</a>` : "";
     return `
       <article class="park">
         <h3>${escapeHtml(p.name)}</h3>
         <span class="where">${escapeHtml(p.city)}（<b>${escapeHtml(p.area)}</b>）</span>
+        ${notice}
         <p>${escapeHtml(p.description)}</p>
         <ul class="tags">${tags}</ul>
-        <a class="map" href="${mapUrl}" target="_blank" rel="noopener">Googleマップで開く</a>
+        <span class="links">
+          <a class="map" href="${mapUrl}" target="_blank" rel="noopener">Googleマップで開く</a>
+          ${official}
+        </span>
       </article>`;
   }
 

@@ -226,7 +226,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   border-radius: 6px;
 }
 .list-L h3 { font-family: var(--display); font-weight: 400; font-size: clamp(20px, 2.4vw, 25px); }
-.list-L .map { margin-top: auto; padding-top: 4px; }
+.list-L .links { margin-top: auto; padding-top: 4px; }
 
 /* 中：3列・標準 */
 .list-M {
@@ -244,7 +244,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .list-M h3 { font-size: 18px; }
 .list-M p { font-size: 14px; }
-.list-M .map { margin-top: auto; }
+.list-M .links { margin-top: auto; }
 
 /* 小：コンパクトな一覧 */
 .list-S {
@@ -263,8 +263,27 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .list-S h3 { font-size: 16px; }
 .list-S .where { grid-column: 1; }
 .list-S p { grid-column: 1; font-size: 13px; color: var(--ai-soft); }
-.list-S .map { grid-column: 2; grid-row: 1 / span 3; align-self: center; font-size: 13px; }
+.list-S .notice { grid-column: 1; }
+.list-S .links {
+  grid-column: 2; grid-row: 1 / span 4; align-self: center;
+  flex-direction: column; align-items: flex-end; gap: 4px;
+}
+.list-S .map { font-size: 13px; }
 .list-S .tags { display: none; }
+
+/* 公式情報で確認したお知らせ（工事・閉鎖・料金変更など） */
+.park .notice {
+  padding: 8px 12px;
+  border-left: 4px solid var(--kawara);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--kawara) 9%, #fff);
+  color: var(--ai);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.park .notice b { margin-right: 8px; color: var(--kawara); }
+
+.links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
 
 .empty {
   margin: 56px 0;
