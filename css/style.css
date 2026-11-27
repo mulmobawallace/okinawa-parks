@@ -177,6 +177,76 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .result-count { margin: 0; font-size: 14px; color: var(--ai-soft); white-space: nowrap; }
 .result-count b { color: var(--ai); font-size: 18px; }
 
+/* リスト／地図の切り替え：選んだ側はヒーローと同じ紅型の黄 */
+.views {
+  display: flex;
+  border: 2px solid var(--ai);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.view {
+  padding: 6px 18px;
+  border: 0;
+  background: none;
+  font-size: 14px; font-weight: 700;
+  white-space: nowrap;
+}
+.view + .view { border-left: 2px solid var(--ai); }
+.view:hover { background: color-mix(in srgb, var(--bingata) 35%, transparent); }
+.view[aria-pressed="true"] { background: var(--bingata); }
+
+/* ───────── 地図 ───────── */
+.map-view { padding-top: 28px; }
+.map-canvas {
+  height: min(68vh, 640px);
+  min-height: 360px;
+  border: 2px solid var(--ai);
+  border-radius: 6px;
+  background: var(--limestone);
+  z-index: 0; /* 上に貼り付く絞り込みバーより下に */
+}
+.map-foot {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 12px;
+}
+.map-legend {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px;
+  margin: 0; padding: 0; list-style: none;
+  font-size: 13px; font-weight: 700;
+}
+.map-legend li { display: inline-flex; align-items: center; gap: 8px; }
+.dot { display: inline-block; border-radius: 50%; border: 2px solid var(--coral); box-shadow: 0 0 0 1px var(--limestone); }
+.dot-L { width: 24px; height: 24px; background: var(--ai); }
+.dot-M { width: 18px; height: 18px; background: var(--pine); }
+.dot-S { width: 12px; height: 12px; background: var(--kawara); }
+.map-note { margin: 0; font-size: 13px; color: var(--ai-soft); line-height: 1.7; }
+
+/* Leaflet の吹き出しを、このサイトのカードに合わせる */
+.leaflet-container { font-family: var(--body); color: var(--ai); }
+.leaflet-popup-content-wrapper {
+  border: 2px solid var(--ai);
+  border-radius: 6px;
+  box-shadow: none;
+}
+.leaflet-popup-tip { border: 2px solid var(--ai); box-shadow: none; }
+.leaflet-popup-content { margin: 16px 18px 14px; font-size: 14px; line-height: 1.7; }
+.leaflet-container a.leaflet-popup-close-button { color: var(--ai); font-size: 20px; width: 28px; height: 28px; }
+.popup { display: flex; flex-direction: column; gap: 6px; }
+.popup h3 { margin: 0 24px 0 0; font-family: var(--display); font-weight: 400; font-size: 17px; color: var(--c); }
+.popup p { margin: 0; }
+.popup .links { margin-top: 4px; }
+.leaflet-container .popup a.map { color: var(--ai); }
+.park-tip {
+  border: 0; border-radius: 4px;
+  background: var(--ai); color: var(--coral);
+  font-family: var(--body); font-weight: 700; font-size: 12px;
+  box-shadow: none;
+}
+.park-tip::before { display: none; }
+
+.to-map { padding: 0; border: 0; background: none; cursor: pointer; }
+
 /* ───────── 一覧：レイアウトの密度も広さに合わせる ───────── */
 .group { padding: 56px 0 8px; }
 .group-head {
@@ -327,6 +397,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
   }
   .areas::-webkit-scrollbar { display: none; }
   .area { flex: 1 0 auto; padding: 6px 12px; }
+  /* スマホでは絞り込みバーを貼り付けない（地図や吹き出しが隠れるため） */
+  .filters { position: static; }
+  .views { order: 1; }
+  .result-count { order: 2; margin-left: auto; }
+  .areas { order: 3; }
+  .search { order: 4; }
+  .map-view { padding-top: 16px; }
+  .map-canvas { height: 62vh; }
   .list-L .park { padding: 20px; }
   .group { padding-top: 44px; }
 }

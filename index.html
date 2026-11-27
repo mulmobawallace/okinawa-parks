@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -40,6 +41,10 @@
 
   <section class="filters" aria-label="地域とキーワードで絞り込み">
     <div class="wrap filters-inner">
+      <div class="views" role="group" aria-label="表示のしかた">
+        <button class="view" data-view="list" aria-pressed="true">リスト</button>
+        <button class="view" data-view="map" aria-pressed="false">地図</button>
+      </div>
       <div class="areas" id="areas" role="group" aria-label="地域"></div>
       <label class="search">
         <span class="visually-hidden">キーワードで検索</span>
@@ -49,7 +54,20 @@
     </div>
   </section>
 
-  <main class="wrap" id="list"></main>
+  <main class="wrap">
+    <section class="map-view" id="map-view" aria-label="公園の地図" hidden>
+      <div class="map-canvas" id="map"></div>
+      <div class="map-foot">
+        <ul class="map-legend" aria-label="ピンの大きさ">
+          <li><span class="dot dot-L"></span>大きな公園</li>
+          <li><span class="dot dot-M"></span>中くらいの公園</li>
+          <li><span class="dot dot-S"></span>小さな公園</li>
+        </ul>
+        <p class="map-note" id="map-note"></p>
+      </div>
+    </section>
+    <div id="list"></div>
+  </main>
 
   <footer class="footer">
     <div class="wrap">
@@ -58,6 +76,7 @@
     </div>
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="data/parks.js"></script>
   <script src="js/app.js"></script>
 </body>
