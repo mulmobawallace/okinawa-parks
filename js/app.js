@@ -115,7 +115,18 @@
         markers.set(i, m);
       });
     });
+
+    // 地図の大きさが0のまま範囲合わせをすると極端に拡大されるので、
+    // 大きさが変わったら（表示された・画面を回転した など）合わせ直す
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(([e]) => {
+        if (!e.contentRect.width) return;
+        map.invalidateSize();
+        if (fitPending) updateMap(PARKS.filter(matches));
+      }).observe(document.getElementById("map"));
+    }
   }
+  let fitPending = false; // 地図の大きさが0で範囲合わせを見送ったとき true
 
   function updateMap(hits) {
     if (!map) return;
@@ -128,6 +139,8 @@
     // 表示範囲：地域を選んでいなければ本島のピンに合わせる（離島は地域で選ぶと表示）
     const mainland = shown.filter((p) => !REMOTE.includes(p.area));
     const target = state.area === "ALL" && mainland.length ? mainland : shown;
+    fitPending = !map.getContainer().offsetWidth;
+    if (fitPending) target.length = 0; // 大きさが分かってから合わせる
     // animate: false … 続けて特定の公園へ寄るとき（地図で見る）に、遅れて終わるアニメーションで上書きされないように
     if (target.length === 1) map.setView([target[0].lat, target[0].lng], 14, { animate: false });
     else if (target.length) map.fitBounds(target.map((p) => [p.lat, p.lng]), { padding: [32, 32], maxZoom: 14, animate: false });
